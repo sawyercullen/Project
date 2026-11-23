@@ -18,14 +18,14 @@ reservations = {
 }
 
 def show_menu():
+   def show_menu():
     print("\nMontana River Adventures")
     print("1. View reservations")
     print("2. Add or update reservation")
-    print("3. View equipment and guides")
-    print("4. Update equipment and guides")
+    print("3. Record a rafting trip")
+    print("4. View trip history")
     print("5. Revenue report")
-    print("6. Run simulation")
-    print("7. Save and exit")
+    print("6. Save and exit")
 
 
 def view_reservations():
@@ -76,21 +76,36 @@ def add_reservation():
 print("Reservation saved!")
 
 def main():
+    load_reservations()
+    load_trips()
+
     while True:
         show_menu()
         choice = input("Choose an option: ")
 
         if choice == "1":
             view_reservations()
+
         elif choice == "2":
             add_reservation()
-        elif choice == "7":
-            print("Goodbye!")
+
+        elif choice == "3":
+            record_trip()
+
+        elif choice == "4":
+            view_trips()
+
+        elif choice == "5":
+            revenue_report()
+
+        elif choice == "6":
+            save_reservations()
+            save_trips()
+            print("All data saved. Goodbye!")
             break
-        elif choice in ["3", "4", "5", "6"]:
-            print("Coming soon")
+
         else:
-            print("Invalid choice. Please choose 1-7.")
+            print("Invalid choice. Please choose 1-6.")
 
 main()
 
@@ -480,3 +495,48 @@ def main():
 
 
 main()
+
+def revenue_report():
+    print("\n--- Rafting Business Report ---")
+
+    if len(trips) == 0:
+        print("No rafting trips have been recorded yet.")
+        return
+
+    total_trips = len(trips)
+    total_people = 0
+    river_totals = {}
+
+    for trip in trips:
+        river = trip["river"]
+        people = trip["people"]
+
+        total_people += people
+
+        if river not in river_totals:
+            river_totals[river] = {
+                "trips": 0,
+                "people": 0
+            }
+
+        river_totals[river]["trips"] += 1
+        river_totals[river]["people"] += people
+
+    average_group_size = total_people / total_trips
+
+    top_river = max(
+        river_totals,
+        key=lambda river: river_totals[river]["trips"]
+    )
+
+    print("Total trips:", total_trips)
+    print("Total people rafting:", total_people)
+    print("Average group size:", round(average_group_size, 2))
+    print("Most popular river:", top_river)
+
+    print("\nTrips by river:")
+
+    for river, totals in river_totals.items():
+        print(river)
+        print("  Trips:", totals["trips"])
+        print("  People:", totals["people"])
