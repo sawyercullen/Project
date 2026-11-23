@@ -27,5 +27,4 @@ How many rafting guides and rafts should Montana River Adventures have available
 - `trips.csv` - Stores recorded rafting trips.
 - `README.md` - Explains the project and how to use it.
 
-## Author
-Sawyer Cullen
+
